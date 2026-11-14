@@ -37,17 +37,20 @@ Verilog is a hardware description language (HDL) used to describe and model digi
 2.5 [Full Adder](#25-full-adder)  
 2.6 [4-Bit Ripple Carry Adder](#26-4-bit-ripple-carry-adder)  
 2.7 [Positive-Level-Sensitive D Latch](#27-positive-level-sensitive-d-latch)  
-2.8 [D Flip-Flop: Positive-Edge, Synchronous Active-Low Reset](#28-d-flip-flop-positive-edge-synchronous-active-low-reset)  
-2.9 [D Flip-Flop: Negative-Edge, Synchronous Active-Low Reset](#29-d-flip-flop-negative-edge-synchronous-active-low-reset)  
-2.10 [D Flip-Flop: Positive-Edge, Asynchronous Active-Low Reset](#210-d-flip-flop-positive-edge-asynchronous-active-low-reset)  
-2.11 [D Flip-Flop: Negative-Edge, Asynchronous Active-Low Reset](#211-d-flip-flop-negative-edge-asynchronous-active-low-reset)  
-2.12 [D Flip-Flop: Positive-Edge, Asynchronous Active-High Reset](#212-d-flip-flop-positive-edge-asynchronous-active-high-reset)  
-2.13 [D Flip-Flop: Negative-Edge, Asynchronous Active-High Reset](#213-d-flip-flop-negative-edge-asynchronous-active-high-reset)  
-2.14 [JK Flip-Flop: Positive-Edge, Synchronous Active-Low Reset](#214-jk-flip-flop-positive-edge-synchronous-active-low-reset)  
-2.15 [JK Flip-Flop: Negative-Edge, Synchronous Active-Low Reset](#215-jk-flip-flop-negative-edge-synchronous-active-low-reset)  
-2.16 [T Flip-Flop: Positive-Edge, Synchronous Active-Low Reset](#216-t-flip-flop-positive-edge-synchronous-active-low-reset)  
-2.17 [T Flip-Flop: Negative-Edge, Synchronous Active-Low Reset](#217-t-flip-flop-negative-edge-synchronous-active-low-reset)  
-2.18 [T Flip-Flop: Negative-Edge, Asynchronous Active-Low Reset](#218-t-flip-flop-negative-edge-asynchronous-active-low-reset)  
+2.8 [D Flip-Flop](#28-d-flip-flop)  
+    - 2.8.1 [Positive-Edge, Synchronous Active-Low Reset](#281-positive-edge-synchronous-active-low-reset)  
+    - 2.8.2 [Negative-Edge, Synchronous Active-Low Reset](#282-negative-edge-synchronous-active-low-reset)  
+    - 2.8.3 [Positive-Edge, Asynchronous Active-Low Reset](#283-positive-edge-asynchronous-active-low-reset)  
+    - 2.8.4 [Negative-Edge, Asynchronous Active-Low Reset](#284-negative-edge-asynchronous-active-low-reset)  
+    - 2.8.5 [Positive-Edge, Asynchronous Active-High Reset](#285-positive-edge-asynchronous-active-high-reset)  
+    - 2.8.6 [Negative-Edge, Asynchronous Active-High Reset](#286-negative-edge-asynchronous-active-high-reset)  
+2.9 [JK Flip-Flop](#29-jk-flip-flop)  
+    - 2.9.1 [Positive-Edge, Synchronous Active-Low Reset](#291-positive-edge-synchronous-active-low-reset)  
+    - 2.9.2 [Negative-Edge, Synchronous Active-Low Reset](#292-negative-edge-synchronous-active-low-reset)  
+2.10 [T Flip-Flop](#210-t-flip-flop)  
+    - 2.10.1 [Positive-Edge, Synchronous Active-Low Reset](#2101-positive-edge-synchronous-active-low-reset)  
+    - 2.10.2 [Negative-Edge, Synchronous Active-Low Reset](#2102-negative-edge-synchronous-active-low-reset)  
+    - 2.10.3 [Negative-Edge, Asynchronous Active-Low Reset](#2103-negative-edge-asynchronous-active-low-reset)
 
 ---
 
@@ -709,7 +712,11 @@ module d_latch_tb;
 endmodule
 ```
 
-## 2.8 D Flip-Flop: Positive-Edge, Synchronous Active-Low Reset
+## 2.8 D Flip-Flop
+
+This section covers D flip-flop implementations with different clock edges and reset configurations.
+
+### 2.8.1 Positive-Edge, Synchronous Active-Low Reset
 
 The D flip-flop captures D on the rising edge of clk. The active-low reset is checked only at that clock edge.
 
@@ -757,7 +764,7 @@ module dff_pos_sync_n_tb;
 endmodule
 ```
 
-## 2.9 D Flip-Flop: Negative-Edge, Synchronous Active-Low Reset
+### 2.8.2 Negative-Edge, Synchronous Active-Low Reset
 
 This version captures D on the falling edge of clk. The active-low reset is sampled at that edge.
 
@@ -805,7 +812,7 @@ module dff_neg_sync_n_tb;
 endmodule
 ```
 
-## 2.10 D Flip-Flop: Positive-Edge, Asynchronous Active-Low Reset
+### 2.8.3 Positive-Edge, Asynchronous Active-Low Reset
 
 The flip-flop captures D on the rising clock edge. When rstn goes low, q is cleared immediately, without waiting for a clock edge.
 
@@ -853,7 +860,7 @@ module dff_pos_async_n_tb;
 endmodule
 ```
 
-## 2.11 D Flip-Flop: Negative-Edge, Asynchronous Active-Low Reset
+### 2.8.4 Negative-Edge, Asynchronous Active-Low Reset
 
 This version captures D on the falling clock edge and clears q immediately when rstn goes low.
 
@@ -901,7 +908,7 @@ module dff_neg_async_n_tb;
 endmodule
 ```
 
-## 2.12 D Flip-Flop: Positive-Edge, Asynchronous Active-High Reset
+### 2.8.5 Positive-Edge, Asynchronous Active-High Reset
 
 This version uses an active-high asynchronous reset. A rising edge on rst clears q immediately; otherwise D is captured on the rising edge of clk.
 
@@ -950,7 +957,7 @@ module dff_pos_async_tb;
 endmodule
 ```
 
-## 2.13 D Flip-Flop: Negative-Edge, Asynchronous Active-High Reset
+### 2.8.6 Negative-Edge, Asynchronous Active-High Reset
 
 This version captures D on the falling clock edge and responds immediately to a rising edge on rst.
 
@@ -999,7 +1006,11 @@ module dff_neg_async_tb;
 endmodule
 ```
 
-## 2.14 JK Flip-Flop: Positive-Edge, Synchronous Active-Low Reset
+## 2.9 JK Flip-Flop
+
+This section contains positive-edge and negative-edge JK flip-flop implementations.
+
+### 2.9.1 Positive-Edge, Synchronous Active-Low Reset
 
 The JK flip-flop updates on the rising clock edge. J and K determine whether the output holds, resets, sets, or toggles.
 
@@ -1063,7 +1074,7 @@ module jkff_pos_sync_n_tb;
 endmodule
 ```
 
-## 2.15 JK Flip-Flop: Negative-Edge, Synchronous Active-Low Reset
+### 2.9.2 Negative-Edge, Synchronous Active-Low Reset
 
 This version performs the JK operation on the falling edge of clk. Reset is synchronous and active-low.
 
@@ -1120,7 +1131,11 @@ module jkff_neg_sync_n_tb;
 endmodule
 ```
 
-## 2.16 T Flip-Flop: Positive-Edge, Synchronous Active-Low Reset
+## 2.10 T Flip-Flop
+
+This section contains T flip-flop implementations with different clock-edge and reset configurations.
+
+### 2.10.1 Positive-Edge, Synchronous Active-Low Reset
 
 A T flip-flop toggles its output when T is high and holds its current state when T is low. Reset is synchronous and active-low.
 
@@ -1168,7 +1183,7 @@ module tff_pos_sync_n_tb;
 endmodule
 ```
 
-## 2.17 T Flip-Flop: Negative-Edge, Synchronous Active-Low Reset
+### 2.10.2 Negative-Edge, Synchronous Active-Low Reset
 
 This version toggles or holds its state on the falling edge of clk. Reset is sampled synchronously at that edge.
 
@@ -1216,7 +1231,7 @@ module tff_neg_sync_n_tb;
 endmodule
 ```
 
-## 2.18 T Flip-Flop: Negative-Edge, Asynchronous Active-Low Reset
+### 2.10.3 Negative-Edge, Asynchronous Active-Low Reset
 
 This T flip-flop responds to the falling edge of clk. When rstn goes low, q is cleared immediately. When T is high at the active clock edge, q toggles.
 
