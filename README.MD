@@ -1,6 +1,6 @@
-# Verilog HDL: Introduction, Quick Reference & Code Library
+# Verilog HDL
 
-A practical learning reference for Verilog HDL, from fundamental language concepts to combinational and sequential circuit implementations. This repository brings together concise explanations, synthesizable RTL examples, and simulation testbenches. It is intended as a growing reference for learning digital design, understanding RTL behavior, and practicing functional verification.
+This repository brings together concise explanations, synthesizable RTL examples, and simulation testbenches. It is intended as a growing reference for learning digital design, understanding RTL behavior, and practicing functional verification.
 
 Verilog is a hardware description language (HDL) used to describe and model digital systems. It allows designers to express hardware at different abstraction levels without tying the RTL description to a specific fabrication technology. Designs can be simulated and verified before implementation, and synthesizable RTL can be mapped to hardware using appropriate design tools.
 
