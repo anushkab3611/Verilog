@@ -8,8 +8,9 @@ Verilog is a hardware description language (HDL) used to describe and model digi
 - Verilog module structure, ports, nets, registers, and vectors.
 - Behavioral, dataflow, structural, gate-level, and switch-level modeling concepts.
 - Operators, procedural assignments, and testbench fundamentals.
-- Combinational circuits such as adders, subtractors, and multiplexers.
-- Sequential circuits such as latches and flip-flops.
+- Combinational circuits such as adders, subtractors, and multiplexers (2:1, 4:1, 8:1, 16:1, and hierarchical MUX designs).
+- Sequential circuits such as latches, flip-flops, flip-flop conversions, shift registers, and synchronous/asynchronous counters.
+- Finite State Machines (FSMs) including sequence detectors, skip counters, electronic locks, and vending machine controllers.
 - Testbenches and waveform dumping for simulation.
 
 ---
@@ -31,26 +32,56 @@ Verilog is a hardware description language (HDL) used to describe and model digi
 
 ## 2. Verilog Codes
 2.1 [Half Adder](#21-half-adder)  
-2.2 [Half Subtractor](#22-half-subtractor)  
-2.3 [2:1 Multiplexer](#23-21-multiplexer)  
-2.4 [4:1 Multiplexer](#24-41-multiplexer)  
-2.5 [Full Adder](#25-full-adder)  
-2.6 [4-Bit Ripple Carry Adder](#26-4-bit-ripple-carry-adder)  
-2.7 [Positive-Level-Sensitive D Latch](#27-positive-level-sensitive-d-latch)  
-2.8 [D Flip-Flop](#28-d-flip-flop)  
-    - 2.8.1 [Positive-Edge, Synchronous Active-Low Reset](#281-positive-edge-synchronous-active-low-reset)  
-    - 2.8.2 [Negative-Edge, Synchronous Active-Low Reset](#282-negative-edge-synchronous-active-low-reset)  
-    - 2.8.3 [Positive-Edge, Asynchronous Active-Low Reset](#283-positive-edge-asynchronous-active-low-reset)  
-    - 2.8.4 [Negative-Edge, Asynchronous Active-Low Reset](#284-negative-edge-asynchronous-active-low-reset)  
-    - 2.8.5 [Positive-Edge, Asynchronous Active-High Reset](#285-positive-edge-asynchronous-active-high-reset)  
-    - 2.8.6 [Negative-Edge, Asynchronous Active-High Reset](#286-negative-edge-asynchronous-active-high-reset)  
-2.9 [JK Flip-Flop](#29-jk-flip-flop)  
-    - 2.9.1 [Positive-Edge, Synchronous Active-Low Reset](#291-positive-edge-synchronous-active-low-reset)  
-    - 2.9.2 [Negative-Edge, Synchronous Active-Low Reset](#292-negative-edge-synchronous-active-low-reset)  
-2.10 [T Flip-Flop](#210-t-flip-flop)  
-    - 2.10.1 [Positive-Edge, Synchronous Active-Low Reset](#2101-positive-edge-synchronous-active-low-reset)  
-    - 2.10.2 [Negative-Edge, Synchronous Active-Low Reset](#2102-negative-edge-synchronous-active-low-reset)  
-    - 2.10.3 [Negative-Edge, Asynchronous Active-Low Reset](#2103-negative-edge-asynchronous-active-low-reset)
+2.2 [Full Adder](#22-full-adder)  
+    - 2.2.1 [Gate-Level Full Adder](#221-gate-level-full-adder)  
+    - 2.2.2 [Structural Full Adder (Using Half Adders)](#222-structural-full-adder-using-half-adders)  
+2.3 [4-Bit Ripple Carry Adder](#23-4-bit-ripple-carry-adder)  
+2.4 [Half Subtractor](#24-half-subtractor)  
+2.5 [Full Subtractor](#25-full-subtractor)  
+2.6 [2:1 Multiplexer](#26-21-multiplexer)  
+2.7 [4:1 Multiplexer](#27-41-multiplexer)  
+    - 2.7.1 [Behavioral 4:1 Multiplexer](#271-behavioral-41-multiplexer)  
+    - 2.7.2 [Structural 4:1 Multiplexer](#272-structural-41-multiplexer)  
+2.8 [4:1 Multiplexer Using 2:1 Multiplexers](#28-41-multiplexer-using-21-multiplexers)  
+2.9 [8:1 Multiplexer](#29-81-multiplexer)  
+2.10 [16:1 Multiplexer (Using 4:1 Multiplexers)](#210-161-multiplexer-using-41-multiplexers)  
+2.11 [Latches](#211-latches)  
+    - 2.11.1 [SR Latch](#2111-sr-latch)  
+    - 2.11.2 [Positive-Level-Sensitive D Latch](#2112-positive-level-sensitive-d-latch)  
+    - 2.11.3 [Negative-Level-Sensitive D Latch](#2113-negative-level-sensitive-d-latch)  
+    - 2.11.4 [D Latch Using 2:1 Multiplexer](#2114-d-latch-using-21-multiplexer)  
+2.12 [D Flip-Flop](#212-d-flip-flop)  
+    - 2.12.1 [Positive-Edge, Synchronous Active-Low Reset](#2121-positive-edge-synchronous-active-low-reset)  
+    - 2.12.2 [Negative-Edge, Synchronous Active-Low Reset](#2122-negative-edge-synchronous-active-low-reset)  
+    - 2.12.3 [Positive-Edge, Asynchronous Active-Low Reset](#2123-positive-edge-asynchronous-active-low-reset)  
+    - 2.12.4 [Negative-Edge, Asynchronous Active-Low Reset](#2124-negative-edge-asynchronous-active-low-reset)  
+    - 2.12.5 [Positive-Edge, Asynchronous Active-High Reset](#2125-positive-edge-asynchronous-active-high-reset)  
+    - 2.12.6 [Negative-Edge, Asynchronous Active-High Reset](#2126-negative-edge-asynchronous-active-high-reset)  
+    - 2.12.7 [Positive-Edge D Flip-Flop Using 2:1 Multiplexers](#2127-positive-edge-d-flip-flop-using-21-multiplexers)  
+2.13 [JK Flip-Flop](#213-jk-flip-flop)  
+    - 2.13.1 [Positive-Edge, Synchronous Active-Low Reset](#2131-positive-edge-synchronous-active-low-reset)  
+    - 2.13.2 [Negative-Edge, Synchronous Active-Low Reset](#2132-negative-edge-synchronous-active-low-reset)  
+2.14 [T Flip-Flop](#214-t-flip-flop)  
+    - 2.14.1 [Positive-Edge, Synchronous Active-Low Reset](#2141-positive-edge-synchronous-active-low-reset)  
+    - 2.14.2 [Negative-Edge, Synchronous Active-Low Reset](#2142-negative-edge-synchronous-active-low-reset)  
+    - 2.14.3 [Negative-Edge, Asynchronous Active-Low Reset](#2143-negative-edge-asynchronous-active-low-reset)  
+2.15 [Flip-Flop Conversions](#215-flip-flop-conversions)  
+    - 2.15.1 [JK Flip-Flop Using D Flip-Flop](#2151-jk-flip-flop-using-d-flip-flop)  
+    - 2.15.2 [JK Flip-Flop Using T Flip-Flop](#2152-jk-flip-flop-using-t-flip-flop)  
+2.16 [Shift Registers & Counters](#216-shift-registers--counters)  
+    - 2.16.1 [4-Bit Shift Register](#2161-4-bit-shift-register)  
+    - 2.16.2 [8-Bit Ring Counter](#2162-8-bit-ring-counter)  
+    - 2.16.3 [Synchronous Up/Down Counter (Parameterized)](#2163-synchronous-updown-counter-parameterized)  
+    - 2.16.4 [2-Bit Asynchronous Up Counter](#2164-2-bit-asynchronous-up-counter)  
+    - 2.16.5 [2-Bit Asynchronous Down Counter](#2165-2-bit-asynchronous-down-counter)  
+2.17 [Finite State Machines (FSM)](#217-finite-state-machines-fsm)  
+    - 2.17.1 [Moore Sequence Detector (1011 — Non-Overlapping)](#2171-moore-sequence-detector-1011--non-overlapping)  
+    - 2.17.2 [Moore Sequence Detector (1011 — Overlapping)](#2172-moore-sequence-detector-1011--overlapping)  
+    - 2.17.3 [Mealy Sequence Detector (1011 — Non-Overlapping)](#2173-mealy-sequence-detector-1011--non-overlapping)  
+    - 2.17.4 [Mealy Sequence Detector (1011 — Overlapping)](#2174-mealy-sequence-detector-1011--overlapping)  
+    - 2.17.5 [Skip Counter FSM (0-1-3-6-7)](#2175-skip-counter-fsm-0-1-3-6-7)  
+    - 2.17.6 [Electronic Combination Lock (01011)](#2176-electronic-combination-lock-01011)  
+    - 2.17.7 [Vending Machine Controller (15 Rupee Dispenser)](#2177-vending-machine-controller-15-rupee-dispenser)  
 
 ---
 
@@ -395,154 +426,11 @@ module half_adder_tb;
 endmodule
 ```
 
-## 2.2 Half Subtractor
+## 2.2 Full Adder
 
-A half subtractor subtracts B from A and produces Difference and Borrow outputs.
+A full adder adds `A`, `B`, and `Cin` and produces `Sum` and `Cout`.
 
-### Design Code
-
-```verilog
-module hs_df(a, b, borrow, diff);
-    input a, b;
-    output borrow, diff;
-
-    assign diff   = a ^ b;
-    assign borrow = ~a & b;
-endmodule
-```
-
-### Testbench
-
-```verilog
-module hs_tb;
-    reg t_x, t_y;
-    wire t_b, t_d;
-
-    hs_df my_gate(
-        .a(t_x), .b(t_y), .borrow(t_b), .diff(t_d)
-    );
-
-    initial begin
-        $dumpfile("hs_tb.vcd");
-        $dumpvars(1, hs_tb);
-        $display("The inputs and outputs are:");
-        $monitor("time=%0d, x=%b, y=%b, borrow=%b, diff=%b",
-                 $time, t_x, t_y, t_b, t_d);
-
-        t_x = 1'b0; t_y = 1'b0;
-        #5 t_x = 1'b0; t_y = 1'b1;
-        #5 t_x = 1'b1; t_y = 1'b0;
-        #5 t_x = 1'b1; t_y = 1'b1;
-        #5 $finish;
-    end
-endmodule
-```
-
-## 2.3 2:1 Multiplexer
-
-A 2:1 multiplexer selects one of two input bits according to the select signal S. When S is 0, I[0] is selected; when S is 1, I[1] is selected.
-
-### Design Code
-
-```verilog
-module mux2to1(Y, S, I);
-    output reg Y;
-    input S;
-    input [1:0] I;
-
-    always @(*) begin
-        if (S == 1'b0)
-            Y = I[0];
-        else
-            Y = I[1];
-    end
-endmodule
-```
-
-### Testbench
-
-```verilog
-module mux2to1_tb;
-    wire Y;
-    reg [1:0] I;
-    reg S;
-    integer i;
-
-    mux2to1 m(.Y(Y), .S(S), .I(I));
-
-    initial begin
-        {S, I} = 3'b000;
-        $monitor("time=%0t S=%b I=%b Y=%b", $time, S, I, Y);
-
-        for (i = 0; i < 8; i = i + 1) begin
-            {S, I} = i;
-            #5;
-        end
-        $finish;
-    end
-endmodule
-```
-
-## 2.4 4:1 Multiplexer
-
-A 4:1 multiplexer selects one of four data inputs using two select lines.
-
-### Design Code
-
-```verilog
-module mux4(sel1, sel2, a, b, c, d, y);
-    input sel1, sel2, a, b, c, d;
-    output reg y;
-
-    always @(*) begin
-        case ({sel1, sel2})
-            2'b00: y = a;
-            2'b01: y = b;
-            2'b10: y = c;
-            2'b11: y = d;
-            default: y = 1'b0;
-        endcase
-    end
-endmodule
-```
-
-### Testbench
-
-```verilog
-module mux4_tb;
-    wire t_y;
-    reg t_a, t_b, t_c, t_d, t_sel1, t_sel2;
-    integer i;
-
-    mux4 my_gate(
-        .a(t_a), .b(t_b), .c(t_c), .d(t_d),
-        .y(t_y), .sel1(t_sel1), .sel2(t_sel2)
-    );
-
-    initial begin
-        {t_a, t_b, t_c, t_d, t_sel1, t_sel2} = 6'b0;
-        $dumpfile("mux4_tb.vcd");
-        $dumpvars(1, mux4_tb);
-        $monitor("time=%0t a=%b b=%b c=%b d=%b sel1=%b sel2=%b y=%b",
-                 $time, t_a, t_b, t_c, t_d, t_sel1, t_sel2, t_y);
-
-        for (i = 0; i < 10; i = i + 1) begin
-            #1;
-            t_a = $random;
-            t_b = $random;
-            t_c = $random;
-            t_d = $random;
-            t_sel1 = $random;
-            t_sel2 = $random;
-        end
-        #1 $finish;
-    end
-endmodule
-```
-
-## 2.5 Full Adder
-
-A full adder adds A, B, and Carry-in and produces Sum and Carry-out.
+### 2.2.1 Gate-Level Full Adder
 
 ### Design Code
 
@@ -591,7 +479,49 @@ module fulladd1_tb;
 endmodule
 ```
 
-## 2.6 4-Bit Ripple Carry Adder
+### 2.2.2 Structural Full Adder (Using Half Adders)
+
+A full adder built hierarchically by instantiating two half-adder sub-modules and an OR gate.
+
+### Design Code
+
+```verilog
+module ha_sub(input a, b, output cout, s);
+    and (cout, a, b);
+    xor (s, a, b);
+endmodule
+
+module fulladd_struct(input x, y, cin, output sum, co);
+    wire w1, w2, w3;
+
+    ha_sub HA1 (.a(x), .b(y), .cout(w1), .s(w2));
+    ha_sub HA2 (.a(cin), .b(w2), .cout(w3), .s(sum));
+    or (co, w1, w3);
+endmodule
+```
+
+### Testbench
+
+```verilog
+module fulladd_struct_tb;
+    reg x, y, cin;
+    wire sum, co;
+    integer i;
+
+    fulladd_struct dut(.x(x), .y(y), .cin(cin), .sum(sum), .co(co));
+
+    initial begin
+        $monitor("time=%0t x=%b y=%b cin=%b sum=%b co=%b", $time, x, y, cin, sum, co);
+        for (i = 0; i < 8; i = i + 1) begin
+            {x, y, cin} = i;
+            #5;
+        end
+        $finish;
+    end
+endmodule
+```
+
+## 2.3 4-Bit Ripple Carry Adder
 
 A 4-bit ripple carry adder connects four full-adder stages. The carry output of each stage feeds the next stage.
 
@@ -657,14 +587,443 @@ module RA4bit_tb;
 endmodule
 ```
 
-## 2.7 Positive-Level-Sensitive D Latch
+## 2.4 Half Subtractor
 
-A positive-level-sensitive D latch is transparent when clk is high. The active-low reset rstn clears the output when it is low.
+A half subtractor subtracts B from A and produces Difference and Borrow outputs.
 
 ### Design Code
 
 ```verilog
-module d_latch(
+module hs_df(a, b, borrow, diff);
+    input a, b;
+    output borrow, diff;
+
+    assign diff   = a ^ b;
+    assign borrow = ~a & b;
+endmodule
+```
+
+### Testbench
+
+```verilog
+module hs_tb;
+    reg t_x, t_y;
+    wire t_b, t_d;
+
+    hs_df my_gate(
+        .a(t_x), .b(t_y), .borrow(t_b), .diff(t_d)
+    );
+
+    initial begin
+        $dumpfile("hs_tb.vcd");
+        $dumpvars(1, hs_tb);
+        $display("The inputs and outputs are:");
+        $monitor("time=%0d, x=%b, y=%b, borrow=%b, diff=%b",
+                 $time, t_x, t_y, t_b, t_d);
+
+        t_x = 1'b0; t_y = 1'b0;
+        #5 t_x = 1'b0; t_y = 1'b1;
+        #5 t_x = 1'b1; t_y = 1'b0;
+        #5 t_x = 1'b1; t_y = 1'b1;
+        #5 $finish;
+    end
+endmodule
+```
+
+## 2.5 Full Subtractor
+
+A full subtractor subtracts `b` and `bin` (borrow-in) from `a` and produces `diff` (difference) and `bout` (borrow-out).
+
+### Design Code
+
+```verilog
+module full_sub_df(
+    input a, b, bin,
+    output diff, bout
+);
+    assign diff = a ^ b ^ bin;
+    assign bout = (~a & b) | (~(a ^ b) & bin);
+endmodule
+```
+
+### Testbench
+
+```verilog
+module full_sub_tb;
+    reg a, b, bin;
+    wire diff, bout;
+    integer i;
+
+    full_sub_df dut(.a(a), .b(b), .bin(bin), .diff(diff), .bout(bout));
+
+    initial begin
+        $dumpfile("full_sub_tb.vcd");
+        $dumpvars(1, full_sub_tb);
+        $monitor("time=%0t a=%b b=%b bin=%b diff=%b bout=%b",
+                 $time, a, b, bin, diff, bout);
+
+        for (i = 0; i < 8; i = i + 1) begin
+            {a, b, bin} = i;
+            #5;
+        end
+        $finish;
+    end
+endmodule
+```
+
+## 2.6 2:1 Multiplexer
+
+A 2:1 multiplexer selects one of two input bits according to the select signal `S`. When `S` is 0, `I[0]` is selected; when `S` is 1, `I[1]` is selected.
+
+### Design Code
+
+```verilog
+module mux2to1(Y, S, I);
+    output reg Y;
+    input S;
+    input [1:0] I;
+
+    always @(*) begin
+        if (S == 1'b0)
+            Y = I[0];
+        else
+            Y = I[1];
+    end
+endmodule
+```
+
+### Testbench
+
+```verilog
+module mux2to1_tb;
+    wire Y;
+    reg [1:0] I;
+    reg S;
+    integer i;
+
+    mux2to1 m(.Y(Y), .S(S), .I(I));
+
+    initial begin
+        {S, I} = 3'b000;
+        $monitor("time=%0t S=%b I=%b Y=%b", $time, S, I, Y);
+
+        for (i = 0; i < 8; i = i + 1) begin
+            {S, I} = i;
+            #5;
+        end
+        $finish;
+    end
+endmodule
+```
+
+## 2.7 4:1 Multiplexer
+
+A 4:1 multiplexer selects one of four data inputs using two select lines.
+
+### 2.7.1 Behavioral 4:1 Multiplexer
+
+### Design Code
+
+```verilog
+module mux4(sel1, sel2, a, b, c, d, y);
+    input sel1, sel2, a, b, c, d;
+    output reg y;
+
+    always @(*) begin
+        case ({sel1, sel2})
+            2'b00: y = a;
+            2'b01: y = b;
+            2'b10: y = c;
+            2'b11: y = d;
+            default: y = 1'b0;
+        endcase
+    end
+endmodule
+```
+
+### Testbench
+
+```verilog
+module mux4_tb;
+    wire t_y;
+    reg t_a, t_b, t_c, t_d, t_sel1, t_sel2;
+    integer i;
+
+    mux4 my_gate(
+        .a(t_a), .b(t_b), .c(t_c), .d(t_d),
+        .y(t_y), .sel1(t_sel1), .sel2(t_sel2)
+    );
+
+    initial begin
+        {t_a, t_b, t_c, t_d, t_sel1, t_sel2} = 6'b0;
+        $dumpfile("mux4_tb.vcd");
+        $dumpvars(1, mux4_tb);
+        $monitor("time=%0t a=%b b=%b c=%b d=%b sel1=%b sel2=%b y=%b",
+                 $time, t_a, t_b, t_c, t_d, t_sel1, t_sel2, t_y);
+
+        for (i = 0; i < 10; i = i + 1) begin
+            #1;
+            t_a = $random;
+            t_b = $random;
+            t_c = $random;
+            t_d = $random;
+            t_sel1 = $random;
+            t_sel2 = $random;
+        end
+        #1 $finish;
+    end
+endmodule
+```
+
+### 2.7.2 Structural 4:1 Multiplexer
+
+A 4:1 multiplexer built structurally using user-defined 3-input AND and 4-input OR gate modules.
+
+### Design Code
+
+```verilog
+module and1(output z, input w, x, y);
+    assign z = w & x & y;
+endmodule
+
+module or1(output e, input a, b, c, d);
+    assign e = a | b | c | d;
+endmodule
+
+module mux4_struct(
+    input [1:0] sel,
+    input [3:0] a,
+    output y
+);
+    wire [5:0] w;
+
+    not (w[0], sel[0]);
+    not (w[1], sel[1]);
+    and1 g1(w[2], w[1], w[0], a[0]);
+    and1 g2(w[3], w[1], sel[0], a[1]);
+    and1 g3(w[4], sel[1], w[0], a[2]);
+    and1 g4(w[5], sel[1], sel[0], a[3]);
+    or1  g5(y, w[2], w[3], w[4], w[5]);
+endmodule
+```
+
+### Testbench
+
+```verilog
+module mux4_struct_tb;
+    wire t_y;
+    reg [3:0] t_a;
+    reg [1:0] t_sel;
+    integer i;
+
+    mux4_struct dut(t_sel, t_a, t_y);
+
+    initial begin
+        {t_a, t_sel} = 6'b0;
+        $monitor("time=%0t a=%b sel=%b y=%b", $time, t_a, t_sel, t_y);
+        for (i = 0; i < 64; i = i + 1) begin
+            {t_a, t_sel} = i;
+            #5;
+        end
+        $finish;
+    end
+endmodule
+```
+
+## 2.8 4:1 Multiplexer Using 2:1 Multiplexers
+
+A 4:1 multiplexer constructed hierarchically using three 2:1 multiplexer instances.
+
+### Design Code
+
+```verilog
+module mux2_unit(input s, a, b, output y);
+    assign y = (~s & a) | (s & b);
+endmodule
+
+module mux4_using_mux2(
+    input [1:0] sel,
+    input [3:0] a,
+    output y
+);
+    wire w0, w1;
+
+    mux2_unit m0(sel[0], a[0], a[1], w0);
+    mux2_unit m1(sel[0], a[2], a[3], w1);
+    mux2_unit m2(sel[1], w0,   w1,   y);
+endmodule
+```
+
+### Testbench
+
+```verilog
+module mux4_using_mux2_tb;
+    reg [3:0] a;
+    reg [1:0] sel;
+    wire y;
+    integer i;
+
+    mux4_using_mux2 dut(.sel(sel), .a(a), .y(y));
+
+    initial begin
+        a = 4'b1010;
+        $monitor("time=%0t sel=%b a=%b y=%b", $time, sel, a, y);
+        for (i = 0; i < 4; i = i + 1) begin
+            sel = i;
+            #5;
+        end
+        $finish;
+    end
+endmodule
+```
+
+## 2.9 8:1 Multiplexer
+
+An 8:1 multiplexer selects one of eight data inputs using a 3-bit select line `sel`.
+
+### Design Code
+
+```verilog
+module mux8to1(
+    input [2:0] sel,
+    input [7:0] a,
+    output reg y
+);
+    always @(*) begin
+        case (sel)
+            3'b000: y = a[0];
+            3'b001: y = a[1];
+            3'b010: y = a[2];
+            3'b011: y = a[3];
+            3'b100: y = a[4];
+            3'b101: y = a[5];
+            3'b110: y = a[6];
+            3'b111: y = a[7];
+            default: y = 1'b0;
+        endcase
+    end
+endmodule
+```
+
+### Testbench
+
+```verilog
+module mux8to1_tb;
+    reg [7:0] a;
+    reg [2:0] sel;
+    wire y;
+    integer i;
+
+    mux8to1 dut(.sel(sel), .a(a), .y(y));
+
+    initial begin
+        a = 8'b1101_0101;
+        $monitor("time=%0t sel=%b a=%b y=%b", $time, sel, a, y);
+        for (i = 0; i < 8; i = i + 1) begin
+            sel = i;
+            #5;
+        end
+        $finish;
+    end
+endmodule
+```
+
+## 2.10 16:1 Multiplexer (Using 4:1 Multiplexers)
+
+A 16:1 multiplexer built hierarchically using five 4:1 multiplexer sub-modules.
+
+### Design Code
+
+```verilog
+module mux4_unit(input [1:0] sel, input [3:0] a, output y);
+    assign y = a[sel];
+endmodule
+
+module mux16to1(
+    input [3:0] sel,
+    input [15:0] a,
+    output y
+);
+    wire [3:0] w;
+
+    mux4_unit m0(sel[1:0], a[3:0],   w[0]);
+    mux4_unit m1(sel[1:0], a[7:4],   w[1]);
+    mux4_unit m2(sel[1:0], a[11:8],  w[2]);
+    mux4_unit m3(sel[1:0], a[15:12], w[3]);
+    mux4_unit m4(sel[3:2], w[3:0],   y);
+endmodule
+```
+
+### Testbench
+
+```verilog
+module mux16to1_tb;
+    reg [15:0] a;
+    reg [3:0] sel;
+    wire y;
+    integer i;
+
+    mux16to1 dut(.sel(sel), .a(a), .y(y));
+
+    initial begin
+        a = 16'hA5C3;
+        $monitor("time=%0t sel=%0d (%b) a=%h y=%b", $time, sel, sel, a, y);
+        for (i = 0; i < 16; i = i + 1) begin
+            sel = i;
+            #5;
+        end
+        $finish;
+    end
+endmodule
+```
+
+## 2.11 Latches
+
+This section covers cross-coupled NAND SR latches, positive/negative level-sensitive D latches, and MUX-based latch implementations.
+
+### 2.11.1 SR Latch
+
+An SR latch modeled using continuous `assign` statements representing cross-coupled NAND gates.
+
+### Design Code
+
+```verilog
+module sr_latch(output Q, Qn, input S, R);
+    assign Q  = ~(R & Qn);
+    assign Qn = ~(S & Q);
+endmodule
+```
+
+### Testbench
+
+```verilog
+module sr_latch_tb;
+    reg S, R;
+    wire Q, Qn;
+
+    sr_latch dut(Q, Qn, S, R);
+
+    initial begin
+        $monitor("time=%0t S=%b R=%b Q=%b Qn=%b", $time, S, R, Q, Qn);
+        S = 1'b0; R = 1'b1;
+        #5 S = 1'b1; R = 1'b1;
+        #5 S = 1'b1; R = 1'b0;
+        #5 S = 1'b1; R = 1'b1;
+        #5 S = 1'b0; R = 1'b0;
+        #5 S = 1'b1; R = 1'b1;
+        #5 $finish;
+    end
+endmodule
+```
+
+### 2.11.2 Positive-Level-Sensitive D Latch
+
+A positive-level-sensitive D latch is transparent when `clk` is high. The active-low reset `rstn` clears the output when it is low.
+
+### Design Code
+
+```verilog
+module d_latch_pos(
     input d, clk, rstn,
     output reg q,
     output qb
@@ -683,17 +1042,17 @@ endmodule
 ### Testbench
 
 ```verilog
-module d_latch_tb;
+module d_latch_pos_tb;
     reg d, clk, rstn;
     wire q, qb;
 
-    d_latch dl0(.d(d), .clk(clk), .rstn(rstn), .q(q), .qb(qb));
+    d_latch_pos dl0(.d(d), .clk(clk), .rstn(rstn), .q(q), .qb(qb));
 
     always #5 clk = ~clk;
 
     initial begin
-        $dumpfile("d_latch_tb.vcd");
-        $dumpvars(1, d_latch_tb);
+        $dumpfile("d_latch_pos_tb.vcd");
+        $dumpvars(1, d_latch_pos_tb);
         {clk, rstn, d} = 3'b000;
 
         #10 rstn = 1;
@@ -712,11 +1071,113 @@ module d_latch_tb;
 endmodule
 ```
 
-## 2.8 D Flip-Flop
+### 2.11.3 Negative-Level-Sensitive D Latch
 
-This section covers D flip-flop implementations with different clock edges and reset configurations.
+A negative-level-sensitive D latch is transparent when `clk` is low (`!clk`).
 
-### 2.8.1 Positive-Edge, Synchronous Active-Low Reset
+### Design Code
+
+```verilog
+module d_latch_neg(
+    input d, clk, rstn,
+    output reg q,
+    output qb
+);
+    assign qb = ~q;
+
+    always @(clk or rstn or d) begin
+        if (!rstn)
+            q <= 1'b0;
+        else if (!clk)
+            q <= d;
+    end
+endmodule
+```
+
+### Testbench
+
+```verilog
+module d_latch_neg_tb;
+    reg d, clk, rstn;
+    wire q, qb;
+
+    d_latch_neg dl0(.d(d), .clk(clk), .rstn(rstn), .q(q), .qb(qb));
+
+    always #5 clk = ~clk;
+
+    initial begin
+        $dumpfile("d_latch_neg_tb.vcd");
+        $dumpvars(1, d_latch_neg_tb);
+        {clk, rstn, d} = 3'b000;
+
+        #10 rstn = 1;
+        #8 d = 1;
+        #8 d = 0;
+        #8 d = 1;
+        #8 d = 0;
+        #2 rstn = 0;
+        #8 d = 1;
+        #8 d = 0;
+        #2 rstn = 1;
+        #8 d = 1;
+        #8 d = 0;
+        #2 $finish;
+    end
+endmodule
+```
+
+### 2.11.4 D Latch Using 2:1 Multiplexer
+
+A positive level-sensitive D latch implemented by feeding the output of a 2:1 multiplexer back to its `0` input terminal.
+
+### Design Code
+
+```verilog
+module mux2_latch_sub(input s, a, b, output reg y);
+    always @(s, a, b) begin
+        case (s)
+            1'b0: y <= a;
+            1'b1: y <= b;
+            default: y <= 1'b0;
+        endcase
+    end
+endmodule
+
+module d_latch_mux(input d, clk, output q, qb);
+    wire w1;
+
+    mux2_latch_sub m1(clk, w1, d, w1);
+    assign q  = w1;
+    assign qb = ~q;
+endmodule
+```
+
+### Testbench
+
+```verilog
+module d_latch_mux_tb;
+    reg d, clk;
+    wire q, qb;
+
+    d_latch_mux dut(.d(d), .clk(clk), .q(q), .qb(qb));
+    always #5 clk = ~clk;
+
+    initial begin
+        $monitor("time=%0t clk=%b d=%b q=%b qb=%b", $time, clk, d, q, qb);
+        clk = 1; d = 0;
+        #7 d = 1;
+        #6 d = 0;
+        #6 d = 1;
+        #10 $finish;
+    end
+endmodule
+```
+
+## 2.12 D Flip-Flop
+
+This section covers D flip-flop implementations with different clock edges, reset configurations, and master-slave MUX structures.
+
+### 2.12.1 Positive-Edge, Synchronous Active-Low Reset
 
 The D flip-flop captures D on the rising edge of clk. The active-low reset is checked only at that clock edge.
 
@@ -764,7 +1225,7 @@ module dff_pos_sync_n_tb;
 endmodule
 ```
 
-### 2.8.2 Negative-Edge, Synchronous Active-Low Reset
+### 2.12.2 Negative-Edge, Synchronous Active-Low Reset
 
 This version captures D on the falling edge of clk. The active-low reset is sampled at that edge.
 
@@ -812,7 +1273,7 @@ module dff_neg_sync_n_tb;
 endmodule
 ```
 
-### 2.8.3 Positive-Edge, Asynchronous Active-Low Reset
+### 2.12.3 Positive-Edge, Asynchronous Active-Low Reset
 
 The flip-flop captures D on the rising clock edge. When rstn goes low, q is cleared immediately, without waiting for a clock edge.
 
@@ -860,7 +1321,7 @@ module dff_pos_async_n_tb;
 endmodule
 ```
 
-### 2.8.4 Negative-Edge, Asynchronous Active-Low Reset
+### 2.12.4 Negative-Edge, Asynchronous Active-Low Reset
 
 This version captures D on the falling clock edge and clears q immediately when rstn goes low.
 
@@ -908,7 +1369,7 @@ module dff_neg_async_n_tb;
 endmodule
 ```
 
-### 2.8.5 Positive-Edge, Asynchronous Active-High Reset
+### 2.12.5 Positive-Edge, Asynchronous Active-High Reset
 
 This version uses an active-high asynchronous reset. A rising edge on rst clears q immediately; otherwise D is captured on the rising edge of clk.
 
@@ -957,7 +1418,7 @@ module dff_pos_async_tb;
 endmodule
 ```
 
-### 2.8.6 Negative-Edge, Asynchronous Active-High Reset
+### 2.12.6 Negative-Edge, Asynchronous Active-High Reset
 
 This version captures D on the falling clock edge and responds immediately to a rising edge on rst.
 
@@ -1006,11 +1467,53 @@ module dff_neg_async_tb;
 endmodule
 ```
 
-## 2.9 JK Flip-Flop
+### 2.12.7 Positive-Edge D Flip-Flop Using 2:1 Multiplexers
+
+A master-slave positive-edge-triggered D flip-flop built using two 2:1 multiplexers configured as positive level-sensitive latches.
+
+### Design Code
+
+```verilog
+module dff_mux_pos(
+    input d, clk,
+    output q, qb
+);
+    wire w1, w2;
+
+    mux2_latch_sub m1(~clk, w1, d,  w1);
+    mux2_latch_sub m2( clk, w2, w1, w2);
+
+    assign q  = w2;
+    assign qb = ~q;
+endmodule
+```
+
+### Testbench
+
+```verilog
+module dff_mux_pos_tb;
+    reg d, clk;
+    wire q, qb;
+
+    dff_mux_pos dut(.d(d), .clk(clk), .q(q), .qb(qb));
+    always #5 clk = ~clk;
+
+    initial begin
+        $monitor("time=%0t clk=%b d=%b q=%b qb=%b", $time, clk, d, q, qb);
+        clk = 0; d = 0;
+        #3 d = 1;
+        #8 d = 0;
+        #8 d = 1;
+        #10 $finish;
+    end
+endmodule
+```
+
+## 2.13 JK Flip-Flop
 
 This section contains positive-edge and negative-edge JK flip-flop implementations.
 
-### 2.9.1 Positive-Edge, Synchronous Active-Low Reset
+### 2.13.1 Positive-Edge, Synchronous Active-Low Reset
 
 The JK flip-flop updates on the rising clock edge. J and K determine whether the output holds, resets, sets, or toggles.
 
@@ -1074,7 +1577,7 @@ module jkff_pos_sync_n_tb;
 endmodule
 ```
 
-### 2.9.2 Negative-Edge, Synchronous Active-Low Reset
+### 2.13.2 Negative-Edge, Synchronous Active-Low Reset
 
 This version performs the JK operation on the falling edge of clk. Reset is synchronous and active-low.
 
@@ -1131,11 +1634,11 @@ module jkff_neg_sync_n_tb;
 endmodule
 ```
 
-## 2.10 T Flip-Flop
+## 2.14 T Flip-Flop
 
 This section contains T flip-flop implementations with different clock-edge and reset configurations.
 
-### 2.10.1 Positive-Edge, Synchronous Active-Low Reset
+### 2.14.1 Positive-Edge, Synchronous Active-Low Reset
 
 A T flip-flop toggles its output when T is high and holds its current state when T is low. Reset is synchronous and active-low.
 
@@ -1183,7 +1686,7 @@ module tff_pos_sync_n_tb;
 endmodule
 ```
 
-### 2.10.2 Negative-Edge, Synchronous Active-Low Reset
+### 2.14.2 Negative-Edge, Synchronous Active-Low Reset
 
 This version toggles or holds its state on the falling edge of clk. Reset is sampled synchronously at that edge.
 
@@ -1231,7 +1734,7 @@ module tff_neg_sync_n_tb;
 endmodule
 ```
 
-### 2.10.3 Negative-Edge, Asynchronous Active-Low Reset
+### 2.14.3 Negative-Edge, Asynchronous Active-Low Reset
 
 This T flip-flop responds to the falling edge of clk. When rstn goes low, q is cleared immediately. When T is high at the active clock edge, q toggles.
 
@@ -1279,13 +1782,794 @@ module tff_neg_async_n_tb;
 endmodule
 ```
 
+## 2.15 Flip-Flop Conversions
+
+This section demonstrates how to build a JK flip-flop using a D flip-flop or a T flip-flop by deriving the appropriate excitation logic.
+
+### 2.15.1 JK Flip-Flop Using D Flip-Flop
+
+Uses the excitation equation $D = J \cdot \overline{Q} + \overline{K} \cdot Q$ to drive a positive-edge D flip-flop.
+
+### Design Code
+
+```verilog
+module jk_using_dff(
+    input j, k, clk, rstn,
+    output q, qb
+);
+    wire d;
+    assign qb = ~q;
+    assign d  = (j & ~q) | (~k & q);
+
+    dff_pos_sync_n d0(.d(d), .clk(clk), .rstn(rstn), .q(q), .qb(qb));
+endmodule
+```
+
+### Testbench
+
+```verilog
+module jk_using_dff_tb;
+    reg j, k, clk, rstn;
+    wire q, qb;
+
+    jk_using_dff dut(.j(j), .k(k), .clk(clk), .rstn(rstn), .q(q), .qb(qb));
+    always #5 clk = ~clk;
+
+    initial begin
+        $monitor("time=%0t rstn=%b j=%b k=%b q=%b qb=%b", $time, rstn, j, k, q, qb);
+        {clk, rstn, j, k} = 4'b0000;
+        #10 rstn = 1;
+        #8 j = 1; k = 0;
+        #8 j = 0; k = 0;
+        #8 j = 0; k = 1;
+        #8 j = 1; k = 1;
+        #10 $finish;
+    end
+endmodule
+```
+
+### 2.15.2 JK Flip-Flop Using T Flip-Flop
+
+Uses the excitation equation $T = J \cdot \overline{Q} + K \cdot Q$ to drive a positive-edge T flip-flop.
+
+### Design Code
+
+```verilog
+module jk_using_tff(
+    input j, k, clk, rstn,
+    output q, qb
+);
+    wire t;
+    assign qb = ~q;
+    assign t  = (j & ~q) | (k & q);
+
+    tff_pos_sync_n t0(.t(t), .clk(clk), .rstn(rstn), .q(q), .qb(qb));
+endmodule
+```
+
+### Testbench
+
+```verilog
+module jk_using_tff_tb;
+    reg j, k, clk, rstn;
+    wire q, qb;
+
+    jk_using_tff dut(.j(j), .k(k), .clk(clk), .rstn(rstn), .q(q), .qb(qb));
+    always #5 clk = ~clk;
+
+    initial begin
+        $monitor("time=%0t rstn=%b j=%b k=%b q=%b qb=%b", $time, rstn, j, k, q, qb);
+        {clk, rstn, j, k} = 4'b0000;
+        #10 rstn = 1;
+        #8 j = 1; k = 0;
+        #8 j = 0; k = 0;
+        #8 j = 0; k = 1;
+        #8 j = 1; k = 1;
+        #10 $finish;
+    end
+endmodule
+```
+
+## 2.16 Shift Registers & Counters
+
+This section covers serial shift registers, ring counters, parameterized synchronous up/down counters, and asynchronous ripple counters.
+
+### 2.16.1 4-Bit Shift Register
+
+A 4-bit serial-in serial-out (SISO) shift register using non-blocking assignments.
+
+### Design Code
+
+```verilog
+module shiftreg_4bit(
+    input clock, clear, A,
+    output reg E
+);
+    reg B, C, D;
+
+    always @(posedge clock or posedge clear) begin
+        if (clear) begin
+            B <= 1'b0; C <= 1'b0; D <= 1'b0; E <= 1'b0;
+        end else begin
+            B <= A;
+            C <= B;
+            D <= C;
+            E <= D;
+        end
+    end
+endmodule
+```
+
+### Testbench
+
+```verilog
+module shiftreg_4bit_tb;
+    reg clock, clear, A;
+    wire E;
+
+    shiftreg_4bit sr(.clock(clock), .clear(clear), .A(A), .E(E));
+    always #5 clock = ~clock;
+
+    initial begin
+        $monitor("[%0t] clear=%b A=%b E=%b", $time, clear, A, E);
+        clock = 0; clear = 1; A = 1;
+        #7 clear = 0;
+        #60 $finish;
+    end
+endmodule
+```
+
+### 2.16.2 8-Bit Ring Counter
+
+An 8-bit ring counter that circulates a single `1` bit across the register on each rising clock edge.
+
+### Design Code
+
+```verilog
+module ring_cntr(
+    input clk, init,
+    output reg [7:0] count
+);
+    always @(posedge clk) begin
+        if (init)
+            count <= 8'b1000_0000;
+        else begin
+            count <= count << 1;
+            count[0] <= count[7];
+        end
+    end
+endmodule
+```
+
+### Testbench
+
+```verilog
+module ring_counter_tb;
+    reg clk, init;
+    wire [7:0] count;
+
+    ring_cntr rc(.clk(clk), .init(init), .count(count));
+    always #5 clk = ~clk;
+
+    initial begin
+        clk = 0; init = 1;
+        $monitor("[%0t] init=%0b count=%b", $time, init, count);
+        #7 init = 0;
+        #50 $finish;
+    end
+endmodule
+```
+
+### 2.16.3 Synchronous Up/Down Counter (Parameterized)
+
+A parameterized synchronous counter that counts up when `mode = 1` and counts down when `mode = 0`.
+
+### Design Code
+
+```verilog
+module sync_counter #(parameter N = 3) (
+    input mode, clr, clk,
+    output reg [N:0] count
+);
+    always @(posedge clk) begin
+        if (clr)
+            count <= 0;
+        else if (mode)
+            count <= count + 1'b1;
+        else
+            count <= count - 1'b1;
+    end
+endmodule
+```
+
+### Testbench
+
+```verilog
+module sync_counter_tb;
+    parameter N = 3;
+    reg mode, clr, clk;
+    wire [N:0] count;
+
+    sync_counter #(N) c1(.mode(mode), .clr(clr), .clk(clk), .count(count));
+    always #5 clk = ~clk;
+
+    initial begin
+        clk = 0; clr = 1; mode = 1;
+        $dumpfile("sync_counter_tb.vcd");
+        $dumpvars(1, sync_counter_tb);
+        $monitor("[%0t] mode=%0b clr=%0b clk=%b count=%b", $time, mode, clr, clk, count);
+        #7 clr = 0;
+        #80 mode = 0;
+        #80 $finish;
+    end
+endmodule
+```
+
+### 2.16.4 2-Bit Asynchronous Up Counter
+
+A 2-bit ripple up counter built using negative-edge-triggered T flip-flops where `q[0]` clocks the second stage.
+
+### Design Code
+
+```verilog
+module cntr_up_asynch(
+    input clk, rstn,
+    output [1:0] y
+);
+    wire [1:0] q, qb;
+
+    tff_neg_async_n tf0(1'b1, clk,  rstn, q[0], qb[0]);
+    tff_neg_async_n tf1(1'b1, q[0], rstn, q[1], qb[1]);
+
+    assign y = q;
+endmodule
+```
+
+### Testbench
+
+```verilog
+module cntr_up_asynch_tb;
+    reg clk, rstn;
+    wire [1:0] y;
+
+    cntr_up_asynch dut(.clk(clk), .rstn(rstn), .y(y));
+    always #5 clk = ~clk;
+
+    initial begin
+        $monitor("[%0t] rstn=%b y=%b (%0d)", $time, rstn, y, y);
+        clk = 0; rstn = 0;
+        #10 rstn = 1;
+        #50 $finish;
+    end
+endmodule
+```
+
+### 2.16.5 2-Bit Asynchronous Down Counter
+
+A 2-bit ripple down counter built using negative-edge-triggered T flip-flops where `qb[0]` clocks the second stage.
+
+### Design Code
+
+```verilog
+module cntr_down_asynch(
+    input clk, rstn,
+    output [1:0] y
+);
+    wire [1:0] q, qb;
+
+    tff_neg_async_n tf0(1'b1, clk,   rstn, q[0], qb[0]);
+    tff_neg_async_n tf1(1'b1, qb[0], rstn, q[1], qb[1]);
+
+    assign y = q;
+endmodule
+```
+
+### Testbench
+
+```verilog
+module cntr_down_asynch_tb;
+    reg clk, rstn;
+    wire [1:0] y;
+
+    cntr_down_asynch dut(.clk(clk), .rstn(rstn), .y(y));
+    always #5 clk = ~clk;
+
+    initial begin
+        $monitor("[%0t] rstn=%b y=%b (%0d)", $time, rstn, y, y);
+        clk = 0; rstn = 0;
+        #10 rstn = 1;
+        #50 $finish;
+    end
+endmodule
+```
+
+## 2.17 Finite State Machines (FSM)
+
+This section covers Moore and Mealy sequence detectors (both overlapping and non-overlapping), custom sequence counters, an electronic combination lock, and a vending machine controller.
+
+### 2.17.1 Moore Sequence Detector (1011 — Non-Overlapping)
+
+Detects the bit pattern `1011` using a 5-state Moore machine without overlapping sequences.
+
+### Design Code
+
+```verilog
+module det_1011_moore_non_overlap(
+    input clk, rstn, in,
+    output out
+);
+    parameter S0 = 0, S1 = 1, S10 = 2, S101 = 3, S1011 = 4;
+    reg [2:0] cur_state, next_state;
+
+    assign out = (cur_state == S1011) ? 1'b1 : 1'b0;
+
+    always @(posedge clk) begin
+        if (!rstn) cur_state <= S0;
+        else       cur_state <= next_state;
+    end
+
+    always @(cur_state or in) begin
+        case (cur_state)
+            S0:      next_state = in ? S1    : S0;
+            S1:      next_state = in ? S1    : S10;
+            S10:     next_state = in ? S101  : S0;
+            S101:    next_state = in ? S1011 : S10;
+            S1011:   next_state = in ? S1    : S0;
+            default: next_state = S0;
+        endcase
+    end
+endmodule
+```
+
+### Testbench
+
+```verilog
+module det_1011_moore_non_overlap_tb;
+    reg clk, in, rstn;
+    wire out;
+    integer i;
+    reg [15:0] data;
+
+    always #10 clk = ~clk;
+
+    det_1011_moore_non_overlap u0(.clk(clk), .rstn(rstn), .in(in), .out(out));
+
+    initial begin
+        $monitor("Time=%0t rstn=%b in=%b out=%b", $time, rstn, in, out);
+        clk = 0; rstn = 0; in = 0;
+        data = 16'b1110_1011_0110_1110;
+        i = 0;
+        #50 rstn = 1;
+        #350 $finish;
+    end
+
+    always @(posedge clk) begin
+        if (rstn && i < 16) begin
+            in <= data[i];
+            i  <= i + 1;
+        end
+    end
+endmodule
+```
+
+### 2.17.2 Moore Sequence Detector (1011 — Overlapping)
+
+Detects the bit pattern `1011` using a 5-state Moore machine allowing overlapping sequences (`S1011` transitions to `S10` when `in = 0`).
+
+### Design Code
+
+```verilog
+module det_1011_moore_overlap(
+    input clk, rstn, in,
+    output out
+);
+    parameter S0 = 0, S1 = 1, S10 = 2, S101 = 3, S1011 = 4;
+    reg [2:0] cur_state, next_state;
+
+    assign out = (cur_state == S1011) ? 1'b1 : 1'b0;
+
+    always @(posedge clk) begin
+        if (!rstn) cur_state <= S0;
+        else       cur_state <= next_state;
+    end
+
+    always @(cur_state or in) begin
+        case (cur_state)
+            S0:      next_state = in ? S1    : S0;
+            S1:      next_state = in ? S1    : S10;
+            S10:     next_state = in ? S101  : S0;
+            S101:    next_state = in ? S1011 : S10;
+            S1011:   next_state = in ? S1    : S10;
+            default: next_state = S0;
+        endcase
+    end
+endmodule
+```
+
+### Testbench
+
+```verilog
+module det_1011_moore_overlap_tb;
+    reg clk, in, rstn;
+    wire out;
+    integer i;
+    reg [15:0] data;
+
+    always #10 clk = ~clk;
+
+    det_1011_moore_overlap u0(.clk(clk), .rstn(rstn), .in(in), .out(out));
+
+    initial begin
+        $monitor("Time=%0t rstn=%b in=%b out=%b", $time, rstn, in, out);
+        clk = 0; rstn = 0; in = 0;
+        data = 16'b1110_1011_0111_1011;
+        i = 0;
+        #50 rstn = 1;
+        #350 $finish;
+    end
+
+    always @(posedge clk) begin
+        if (rstn && i < 16) begin
+            in <= data[i];
+            i  <= i + 1;
+        end
+    end
+endmodule
+```
+
+### 2.17.3 Mealy Sequence Detector (1011 — Non-Overlapping)
+
+Detects the bit pattern `1011` using a 4-state Mealy machine without overlapping sequences.
+
+### Design Code
+
+```verilog
+module det_1011_mealy_non_overlap(
+    input clk, rstn, in,
+    output reg out
+);
+    parameter S0 = 0, S1 = 1, S10 = 2, S101 = 3;
+    reg [1:0] cur_state, next_state;
+
+    always @(posedge clk) begin
+        if (!rstn) cur_state <= S0;
+        else       cur_state <= next_state;
+    end
+
+    always @(cur_state or in) begin
+        case (cur_state)
+            S0:      begin next_state = in ? S1   : S0;  out = 1'b0; end
+            S1:      begin next_state = in ? S1   : S10; out = 1'b0; end
+            S10:     begin next_state = in ? S101 : S0;  out = 1'b0; end
+            S101:    begin next_state = in ? S0   : S10; out = in ? 1'b1 : 1'b0; end
+            default: begin next_state = S0; out = 1'b0; end
+        endcase
+    end
+endmodule
+```
+
+### Testbench
+
+```verilog
+module det_1011_mealy_non_overlap_tb;
+    reg clk, in, rstn;
+    wire out;
+    integer i;
+    reg [15:0] data;
+
+    always #10 clk = ~clk;
+
+    det_1011_mealy_non_overlap u0(.clk(clk), .rstn(rstn), .in(in), .out(out));
+
+    initial begin
+        $monitor("Time=%0t rstn=%b in=%b out=%b", $time, rstn, in, out);
+        clk = 0; rstn = 0; in = 0;
+        data = 16'b1110_1101_1011_1011;
+        i = 0;
+        #50 rstn = 1;
+        #350 $finish;
+    end
+
+    always @(posedge clk) begin
+        if (rstn && i < 16) begin
+            in <= data[i];
+            i  <= i + 1;
+        end
+    end
+endmodule
+```
+
+### 2.17.4 Mealy Sequence Detector (1011 — Overlapping)
+
+Detects the bit pattern `1011` using a 4-state Mealy machine allowing overlapping sequences (`S101` transitions to `S1` when `in = 1`).
+
+### Design Code
+
+```verilog
+module det_1011_mealy_overlap(
+    input clk, rstn, in,
+    output reg out
+);
+    parameter S0 = 0, S1 = 1, S10 = 2, S101 = 3;
+    reg [1:0] cur_state, next_state;
+
+    always @(posedge clk) begin
+        if (!rstn) cur_state <= S0;
+        else       cur_state <= next_state;
+    end
+
+    always @(cur_state or in) begin
+        case (cur_state)
+            S0:      begin next_state = in ? S1   : S0;  out = 1'b0; end
+            S1:      begin next_state = in ? S1   : S10; out = 1'b0; end
+            S10:     begin next_state = in ? S101 : S0;  out = 1'b0; end
+            S101:    begin next_state = in ? S1   : S10; out = in ? 1'b1 : 1'b0; end
+            default: begin next_state = S0; out = 1'b0; end
+        endcase
+    end
+endmodule
+```
+
+### Testbench
+
+```verilog
+module det_1011_mealy_overlap_tb;
+    reg clk, in, rstn;
+    wire out;
+    integer i;
+    reg [15:0] data;
+
+    always #10 clk = ~clk;
+
+    det_1011_mealy_overlap u0(.clk(clk), .rstn(rstn), .in(in), .out(out));
+
+    initial begin
+        $monitor("Time=%0t rstn=%b in=%b out=%b", $time, rstn, in, out);
+        clk = 0; rstn = 0; in = 0;
+        data = 16'b1110_1011_0110_1110;
+        i = 0;
+        #50 rstn = 1;
+        #350 $finish;
+    end
+
+    always @(posedge clk) begin
+        if (rstn && i < 16) begin
+            in <= data[i];
+            i  <= i + 1;
+        end
+    end
+endmodule
+```
+
+### 2.17.5 Skip Counter FSM (0-1-3-6-7)
+
+A Moore FSM that counts the non-sequential pattern `0 -> 1 -> 3 -> 6 -> 7 -> 0` when `x_in` is high, holds its count when `x_in` is low, and asserts `y_out = 1` when the count reaches `7`.
+
+### Design Code
+
+```verilog
+module skip_counter_fsm(
+    output y_out,
+    output [2:0] st,
+    input x_in, clock, reset
+);
+    reg [2:0] state;
+    parameter S0 = 3'b000, S1 = 3'b001, S2 = 3'b011, S3 = 3'b110, S4 = 3'b111;
+
+    always @(posedge clock) begin
+        if (reset == 1'b0)
+            state <= S0;
+        else begin
+            case (state)
+                S0: if (x_in) state <= S1; else state <= S0;
+                S1: if (x_in) state <= S2; else state <= S1;
+                S2: if (x_in) state <= S3; else state <= S2;
+                S3: if (x_in) state <= S4; else state <= S3;
+                S4: if (x_in) state <= S0; else state <= S4;
+                default: state <= S0;
+            endcase
+        end
+    end
+
+    assign y_out = (state == S4);
+    assign st    = state;
+endmodule
+```
+
+### Testbench
+
+```verilog
+module skip_counter_fsm_tb;
+    wire [2:0] t_st;
+    wire t_y_out;
+    reg t_x_in, t_clock, t_reset;
+
+    skip_counter_fsm M1(t_y_out, t_st, t_x_in, t_clock, t_reset);
+    always #5 t_clock = ~t_clock;
+
+    initial begin
+        $dumpfile("skip_counter_fsm_tb.vcd");
+        $dumpvars(1, skip_counter_fsm_tb);
+        $monitor("[%0t] reset=%b x_in=%b state=%0d (%b) y_out=%b",
+                 $time, t_reset, t_x_in, t_st, t_st, t_y_out);
+
+        t_reset = 0; t_clock = 0; t_x_in = 1;
+        fork
+            #7   t_reset = 1;
+            #82  t_x_in  = 0;
+            #107 t_reset = 0;
+        join
+        #150 $finish;
+    end
+endmodule
+```
+
+### 2.17.6 Electronic Combination Lock (01011)
+
+An electronic combination lock with a `reset` button, two number buttons (`b0` for 0 and `b1` for 1), and an `unlock` output that asserts when the sequence `01011` is entered.
+
+### Design Code
+
+```verilog
+module lock(
+    input clk, reset, b0, b1,
+    output unlock
+);
+    parameter S_RESET = 0, S_0 = 1, S_01 = 2, S_010 = 3, S_0101 = 4, S_01011 = 5;
+    reg [2:0] state, next_state;
+
+    always @(*) begin
+        if (reset)
+            next_state = S_RESET;
+        else begin
+            case (state)
+                S_RESET: next_state = b0 ? S_0   : (b1 ? S_RESET : state);
+                S_0:     next_state = b0 ? S_0   : (b1 ? S_01    : state);
+                S_01:    next_state = b0 ? S_010 : (b1 ? S_RESET : state);
+                S_010:   next_state = b0 ? S_0   : (b1 ? S_0101  : state);
+                S_0101:  next_state = b0 ? S_010 : (b1 ? S_01011 : state);
+                S_01011: next_state = b0 ? S_0   : (b1 ? S_RESET : state);
+                default: next_state = S_RESET;
+            endcase
+        end
+    end
+
+    always @(posedge clk)
+        state <= next_state;
+
+    assign unlock = (state == S_01011) ? 1'b1 : 1'b0;
+endmodule
+```
+
+### Testbench
+
+```verilog
+module lock_tb;
+    reg clk, b0, b1, reset;
+    wire unlock;
+    integer i;
+    reg [4:0] data;
+
+    always #10 clk = ~clk;
+
+    lock u0(clk, reset, b0, b1, unlock);
+
+    initial begin
+        $monitor("Time=%0t reset=%b b0=%b b1=%b unlock=%b", $time, reset, b0, b1, unlock);
+        $dumpfile("lock_tb.vcd");
+        $dumpvars(1, lock_tb);
+        clk = 0; reset = 1; b0 = 0; b1 = 0;
+        #50 reset = 0;
+        data = 5'b01011;
+        i = 4;
+        #130 $finish;
+    end
+
+    always @(posedge clk) begin
+        if (!reset && i >= 0) begin
+            b0 <= ~data[i];
+            b1 <=  data[i];
+            i  <= i - 1;
+        end
+    end
+endmodule
+```
+
+### 2.17.7 Vending Machine Controller (15 Rupee Dispenser)
+
+A vending machine FSM that accepts 5-rupee (`2'b01`) and 10-rupee (`2'b10`) coins and asserts `can_despatch = 1` when the accumulated total reaches or exceeds 15 rupees.
+
+### Design Code
+
+```verilog
+module vending_machine(
+    output can_despatch,
+    input clk,
+    input [1:0] coin,
+    input rst
+);
+    reg [1:0] state, next_state;
+    parameter s0 = 0, s5 = 1, s10 = 2, s15 = 3;
+
+    always @(posedge clk) begin
+        if (rst)
+            state <= s0;
+        else
+            state <= next_state;
+    end
+
+    always @(state, coin) begin
+        case (state)
+            s0: begin
+                if (coin == 2'b00)      next_state = s0;
+                else if (coin == 2'b01) next_state = s5;
+                else if (coin == 2'b10) next_state = s10;
+                else                    next_state = s0;
+            end
+            s5: begin
+                if (coin == 2'b00)      next_state = s5;
+                else if (coin == 2'b01) next_state = s10;
+                else if (coin == 2'b10) next_state = s15;
+                else                    next_state = s5;
+            end
+            s10: begin
+                if (coin == 2'b00)      next_state = s10;
+                else if (coin == 2'b01) next_state = s15;
+                else if (coin == 2'b10) next_state = s15;
+                else                    next_state = s10;
+            end
+            s15: begin
+                if (coin == 2'b00)      next_state = s0;
+                else if (coin == 2'b01) next_state = s5;
+                else if (coin == 2'b10) next_state = s10;
+                else                    next_state = s0;
+            end
+            default: next_state = s0;
+        endcase
+    end
+
+    assign can_despatch = (state == s15) ? 1'b1 : 1'b0;
+endmodule
+```
+
+### Testbench
+
+```verilog
+module vending_machine_tb;
+    reg clk, rst;
+    wire can_despatch;
+    integer i;
+    reg [1:0] coin_stack [0:5], coin;
+
+    always #10 clk = ~clk;
+
+    vending_machine u0(can_despatch, clk, coin, rst);
+
+    initial begin
+        $monitor("Time=%0t reset=%b coin=%b can_despatched=%b", $time, rst, coin, can_despatch);
+        $dumpfile("vending_machine_tb.vcd");
+        $dumpvars(1, vending_machine_tb);
+        clk = 0; rst = 1; coin = 2'b00;
+        #50 rst = 0;
+
+        coin_stack[0] = 2'b00; // 0 rupee
+        coin_stack[1] = 2'b01; // 5 rupee
+        coin_stack[2] = 2'b10; // 10 rupee -> dispenses
+        coin_stack[3] = 2'b01; // 5 rupee
+        coin_stack[4] = 2'b10; // 10 rupee -> dispenses
+        coin_stack[5] = 2'b00; // 0 rupee
+        i = 0;
+        #130 $finish;
+    end
+
+    always @(posedge clk) begin
+        if (!rst && i < 6) begin
+            coin <= coin_stack[i];
+            i    <= i + 1;
+        end
+    end
+endmodule
+```
+
 ---
 
-## Notes
-
-- Each code section contains a design module and a separate testbench.
-- Testbench module names are unique so multiple examples can be kept in the same repository without module-name collisions.
-- The D flip-flop examples distinguish clock edge, reset polarity, and synchronous/asynchronous reset behavior.
-- The repeated positive-edge asynchronous active-low DFF example from the supplied notes has been included once.
-- The active-high asynchronous reset examples use `posedge rst` and `if (rst)`, so the reset behavior matches the active-high description.
-- The testbenches are simulation examples; run each with its corresponding DUT and check the waveform/output before using it in a larger design.
